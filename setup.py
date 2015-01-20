@@ -12,16 +12,25 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+import setuptools
+
+# In python < 2.7.4, a lazy loading of package `pbr` will break
+# setuptools if some other modules registered functions in `atexit`.
+# solution from: http://bugs.python.org/issue15881#msg170215
+try:
+    import multiprocessing  # noqa
+except ImportError:
+    pass
+
+setuptools.setup(
+    setup_requires=['pbr'],
+    pbr=True)
+
+"""
 from setuptools import find_packages
 from setuptools import setup
 
 setup(
-    name='fuelclient',
-    version='6.0.0',
-    description='Command line interface for Nailgun',
-    long_description="""Command line interface for Nailgun""",
-    author='Mirantis Inc.',
-    author_email='product@mirantis.com',
     url='http://mirantis.com',
     install_requires=['PyYAML==3.10', "argparse==1.2.1"],
     packages=find_packages(),
@@ -32,3 +41,4 @@ setup(
         ],
     }
 )
+"""
